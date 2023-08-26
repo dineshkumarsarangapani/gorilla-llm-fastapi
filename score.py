@@ -135,7 +135,8 @@ def init():
     device = "cuda"
     # export AZUREML_MODEL_DIR=/home/azureuser/cloudfiles/code/gorilla-falcon-7b-hf-v0
     model_path = os.getenv("AZUREML_MODEL_DIR")
-    
+    print("model_path", model_path)
+    logging.info(f"model_path :{model_path}")
     model, tokenizer = load_model(
         model_path, device, 1, None, False, False
     )

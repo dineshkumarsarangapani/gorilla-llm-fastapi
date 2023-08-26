@@ -1,0 +1,35 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: textgeneration
+endpoint_name: gorilla-llm-falcon-hf
+model: azureml:gorilla-falcon-7b-hf:1
+model_mount_path: "/model_path"
+liveness_probe:
+  initial_delay: 320
+  failure_threshold: 30
+  success_threshold: 1
+  timeout: 400
+readiness_probe:
+  initial_delay: 320
+  failure_threshold: 30
+  success_threshold: 1
+  timeout: 400
+request_settings:
+  request_timeout_ms: 50000
+environment_variables:
+  AZUREML_MODEL_DIR: '/model_path'
+environment:
+  name: hf-tg
+  image: 4c3bbcb706144dbeb4a9db8d390ced0a.azurecr.io/gorilla-llm-falcon-hf
+  inference_config:
+    liveness_route:
+      port: 80
+      path: /liveness
+    readiness_route:
+      port: 80
+      path: /readiness
+    scoring_route:
+      port: 80
+      path: /prompt
+instance_type: Standard_NC4as_T4_v3
+instance_count: 1
+    
